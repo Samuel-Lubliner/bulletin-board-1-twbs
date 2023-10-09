@@ -1,43 +1,53 @@
-<div>
-  <div>
-    <h1>
-      All boards
-    </h1>
-  </div>
-</div>
-
-<hr>
-
-<div>
-  <div>
-    <h2>
-      Add a new board
-    </h2>
-
-    <form action="/insert_board" method="post">
-      <div>
-        <label for="name_box">
-          Name
-        </label>
-
-        <input type="text" id="name_box" name="query_name">
+<div class="container">
+  <div class="row">
+    <div class="offset-md-3 col-md-6">
+      <div class="card">
+        <div class="card-header d-flex align-items-center">
+          <h1 class="h6">All boards</h1>
+          <!-- Button trigger modal -->
+          <button type="button" class="ms-auto btn btn-sm btn-outline-success" data-bs-toggle="modal" data-bs-target="#newBoardModal">
+            Add a new board
+          </button>
+        </div>
+        <ul class="list-group list-group-flush">
+          <% @list_of_boards.each do |a_board| %>
+            <li class="d-flex list-group-item list-group-item-action">
+              <a href="/boards/<%= a_board.id %>">
+                <%= a_board.name %>
+              </a>
+              <div class="ms-auto">
+                <i class="fas fa-chevron-right"></i>
+              </div>
+            </li>
+          <% end %>
+        </ul>
       </div>
+    </div>
+  </div>
 
-      <button>
-        Add board
-      </button>
-    </form>
+  <!-- Modal -->
+  <div class="modal fade" id="newBoardModal" tabindex="-1" aria-labelledby="newBoardModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="newBoardModalLabel">New board</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <%= form_for :board, url: '/insert_board', html: { method: :post } do |f| %>
+            <div class="mb-3">
+              <%= f.label :name, class: 'form-label' %>
+              <%= f.text_field :name, id: 'name_box', class: 'form-control' %>
+            </div>
+            <div class="d-grid">
+              <%= f.submit 'Add board', class: 'btn btn-success' %>
+            </div>
+          <% end %>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+        </div>
+      </div>
+    </div>
   </div>
 </div>
-
-<hr>
-
-<ul>
-  <% @list_of_boards.each do |a_board| %>
-    <li>
-      <a href="/boards/<%= a_board.id %>">
-        <%= a_board.name %>
-      </a>
-    </li>
-  <% end %>
-</ul>
